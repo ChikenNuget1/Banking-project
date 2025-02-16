@@ -20,7 +20,14 @@ class Account:
     
     def main_screen(self):
         print("Current Accounts:\n1. Checking Account\n2. Savings Account\n3. Business Account\n4. Check balance of all accounts")
-        user_input = int(input("Which account? "))
+        user_input = "abc"
+
+        # There is same block of code a few lines down. Maybe we can make a helper function?
+        while not isinstance(user_input, int):
+            try:
+                user_input = int(input("Which account? "))
+            except ValueError:
+                print("Please enter a valid number")
         print()
         match user_input:
             case 1: self.current_acount = self.checking
@@ -31,7 +38,12 @@ class Account:
         print(self.current_acount)
 
         print("Select the process:\n1. Deposit\n2. Withdraw\n3. Exchange")
-        user_input2= int(input("Which process? "))
+        user_input2 = "abc"
+        while not isinstance(user_input2, int):
+            try:
+                user_input2= int(input("Which process? "))
+            except ValueError:
+                print("Please enter a valid number")
         print()
         match user_input2:
             case 1: self.change_money()
@@ -41,16 +53,24 @@ class Account:
     def send_money(self):
         ac_list = self.acc_list
         ac_list.remove(self.current_acount)
+        
         for i in range(len(ac_list)):
             print(f"{i+1}. {ac_list[i]}")
         user_input = int(input("Which account should we send the money to? "))
+        
         match user_input:
             case 1: send_to_acc = ac_list[0]
             case 2: send_to_acc = ac_list[1]
+        
         money_to_send = 9999999
+        
         while money_to_send > self.current_acount.get_balance():
-            money_to_send = float(input("How much should we send? "))
+            try:
+                money_to_send = float(input("How much should we send? "))
+            except ValueError:
+                print("Please enter a valid number")
         send_to_acc.change_money(money_to_send)
+        
         self.current_acount.change_money(money_to_send*-1)
         print("\n")
         self.main_screen()
@@ -58,15 +78,24 @@ class Account:
     def change_money(self):
         print(self.current_acount)
         print("Please enter a negative number to withdraw and a positive number to deposit")
-        user_input = float(input("Please enter a number: "))
+        
+        user_input = "abc"
+        while not isinstance(user_input, float):
+            try:
+                user_input = float(input("Please enter a number: "))
+            except ValueError:
+                print("Please enter a valid number")
+        
         print()
         self.current_acount.change_money(user_input)
         self.main_screen()
 
     def check_balance(self):
         print("Checking balance on all accounts...")
+        
         for i in self.acc_list:
             print(i)
+        
         print()
         self.main_screen()
 
